@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+
+if [[ $# -eq 0 ]]; then
+    echo "usage: $0 MEDIA-FILE-NAME"
+    exit 0
+fi
+
+ext=${@##*.}
+tnam="kodi-play.$ext"
+
+if [[ -h ~/video/$tnam ]]; then
+    rm ~/video/$tnam
+fi
+
+if [[ -e ~/video/$tnam ]]; then
+    echo "$0: Temp file exists and is not a symbolic link" > /dev/stderr
+    exit 1
+fi
+
+ln -s "$(realpath -- "$@")" ~/video/$tnam
+
+myIP=$(ip route get 1 | awk '{print $NF;exit}')
+
+kodi_loc='odroid.local:8080'
+
+curl -X POST -H 'Content-Type: application/json' http://$kodi_loc/jsonrpc\?awx --data-ascii  '{"jsonrpc": "2.0", "method": "Player.Open", "params" : { "item" : { "file" : "smb://'$myIP'/public/'$tnam'"}, "options": { "resume": false } }, "id": 1}'
