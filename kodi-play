@@ -1,11 +1,20 @@
 #!/usr/bin/env zsh
 
+kodi_loc='odroid.local:8080'
+
 if [[ $# -eq 0 ]]; then
     echo "usage: $0 MEDIA-FILE-NAME"
     exit 0
 fi
 
 ext=${@##*.}
+
+if [[ $ext = 'url' ]]; then
+    url=$(cat "$@")
+    curl -X POST -H 'Content-Type: application/json' http://$kodi_loc/jsonrpc\?awx --data-ascii  '{"jsonrpc": "2.0", "method": "Player.Open", "params" : { "item" : { "file" : "'$url'"}, "options": { "resume": false } }, "id": 1}'
+    exit 0
+fi
+
 tnam="kodi-play.$ext"
 
 if [[ -h ~/video/$tnam ]]; then
@@ -20,7 +29,5 @@ fi
 ln -s "$(realpath -- "$@")" ~/video/$tnam
 
 myIP=$(ip route get 1 | awk '{print $NF;exit}')
-
-kodi_loc='odroid.local:8080'
 
 curl -X POST -H 'Content-Type: application/json' http://$kodi_loc/jsonrpc\?awx --data-ascii  '{"jsonrpc": "2.0", "method": "Player.Open", "params" : { "item" : { "file" : "smb://'$myIP'/public/'$tnam'"}, "options": { "resume": false } }, "id": 1}'
