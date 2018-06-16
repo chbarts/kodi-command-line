@@ -7,7 +7,7 @@ if [[ $# -eq 0 ]]; then
     exit 0
 fi
 
-if [[ "$@" =~ '://' ]]; then
+if [[ "$@" =~ '^[[:alpha:]]+://' ]]; then
     curl -X POST -H 'Content-Type: application/json' http://$kodi_loc/jsonrpc\?awx --data-ascii  '{"jsonrpc": "2.0", "method": "Player.Open", "params" : { "item" : { "file" : "'"$@"'"}, "options": { "resume": false } }, "id": 1}'
     exit 0
 fi
