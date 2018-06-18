@@ -9,7 +9,7 @@ fi
 
 if [[ "$@" =~ '^[[:alpha:]]+://' ]]; then
     if [[ "$@" =~ '://(www\.)?youtu' ]]; then
-        videoid=$(echo "$@" | grep -Po '[[:alnum:]]+$')
+        videoid=$(echo "$@" | grep -Po '[[:alnum:]_-]+$')
         curl -X POST -H 'Content-Type: application/json' http://$kodi_loc/jsonrpc\?awx --data-ascii  '{"jsonrpc": "2.0", "method": "Player.Open", "params" : { "item" : { "file" : "plugin://plugin.video.youtube/?path=/root/video&action=play_video&videoid='$videoid'"}, "options": { "resume": false } }, "id": 1}'
         exit 0
     fi
