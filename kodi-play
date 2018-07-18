@@ -3,11 +3,16 @@
 kodi_loc='odroid.local:8080'
 
 if [[ $# -eq 0 ]]; then
-    echo "usage: $0 MEDIA-FILE-NAME"
+    echo "usage: $0 [MEDIA-FILE-NAME|YOUTUBE-URL] or $0 -y YOUTUBE-VIDEO-ID"
     exit 0
 fi
 
 if [[ ($# -eq 2) && ($1 == '-y') ]]; then
+    curl -X POST -H 'Content-Type: application/json' http://$kodi_loc/jsonrpc\?awx --data-ascii  '{"jsonrpc": "2.0", "method": "Player.Open", "params" : { "item" : { "file" : "plugin://plugin.video.youtube/?path=/root/video&action=play_video&videoid='$2'"}, "options": { "resume": false } }, "id": 1}'
+    exit 0
+fi
+
+if [[ "$@" =~ '^[[:alpha:]]+://' ]]; then    
     videoid=$(echo "$@" | perl -ne 'if (m/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.)?youtube\.com\/watch(?:\.php)?\?.*v=)([a-zA-Z0-9\-_]+)/) { print "$1\n" }')
     if [[ $videoid ]]; then
         curl -X POST -H 'Content-Type: application/json' http://$kodi_loc/jsonrpc\?awx --data-ascii  '{"jsonrpc": "2.0", "method": "Player.Open", "params" : { "item" : { "file" : "plugin://plugin.video.youtube/?path=/root/video&action=play_video&videoid='$videoid'"}, "options": { "resume": false } }, "id": 1}'
