@@ -7,4 +7,5 @@ fi
 
 kodi_loc='odroid.local:8080'
 
-curl -X POST -H 'Content-Type: application/json' http://$kodi_loc/jsonrpc\?awx --data-ascii  '{"jsonrpc": "2.0", "method": "Player.PlayPause", "params" : { "playerid": 1 }, "id": 1}'
+for i in $(curl -X POST -H 'Content-Type: application/json' http://$kodi_loc/jsonrpc\?awx --data-ascii '{ "jsonrpc": "2.0", "method": "Player.GetActivePlayers", "id": 1 }' | jq -r '.result[].playerid')
+         curl -X POST -H 'Content-Type: application/json' http://$kodi_loc/jsonrpc\?awx --data-ascii '{"jsonrpc":"2.0", "method":"Player.PlayPause", "params":{"playerid":'$i'},"id":1}'
