@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-kodi_loc='odroid.local:8080'
+kodi_loc='odroid.lan:8080'
 
 if [[ $# -eq 0 ]]; then
     echo "usage: $0 [MEDIA-FILE-NAME|YOUTUBE-URL] or $0 -y YOUTUBE-VIDEO-ID"
