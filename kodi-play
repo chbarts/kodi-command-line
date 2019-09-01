@@ -45,6 +45,7 @@ fi
 
 ln -s "$(realpath -- "$@")" ~/video/$tnam
 
-myIP=$(ip route get 1 | awk '{print $(NF-2);exit}')
+# https://stackoverflow.com/questions/13322485/how-to-get-the-primary-ip-address-of-the-local-machine-on-linux-and-os-x
+myIP=$(ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p')
 
 curl -X POST -H 'Content-Type: application/json' http://$kodi_loc/jsonrpc\?awx --data-ascii  '{"jsonrpc": "2.0", "method": "Player.Open", "params" : { "item" : { "file" : "smb://'$myIP'/public/'$tnam'"}, "options": { "resume": false } }, "id": 1}'
