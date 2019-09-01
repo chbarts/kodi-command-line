@@ -45,6 +45,6 @@ fi
 
 ln -s "$(realpath -- "$@")" ~/video/$tnam
 
-myIP=$(ip route get 1 | awk '{print $NF;exit}')
+myIP=$(ip route get 1 | awk '{print $(NF-2);exit}')
 
 curl -X POST -H 'Content-Type: application/json' http://$kodi_loc/jsonrpc\?awx --data-ascii  '{"jsonrpc": "2.0", "method": "Player.Open", "params" : { "item" : { "file" : "smb://'$myIP'/public/'$tnam'"}, "options": { "resume": false } }, "id": 1}'
