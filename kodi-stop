@@ -5,7 +5,7 @@ if [[ $# -gt 0 ]]; then
     exit 0
 fi
 
-kodi_loc='odroid.lan:8080'
+kodi_loc='rpi4:8080'
 
 for i in $(curl -X POST -H 'Content-Type: application/json' http://$kodi_loc/jsonrpc\?awx --data-ascii '{ "jsonrpc": "2.0", "method": "Player.GetActivePlayers", "id": 1 }' | jq -r '.result[].playerid')
          curl -X POST -H 'Content-Type: application/json' http://$kodi_loc/jsonrpc\?awx --data-ascii '{"jsonrpc":"2.0", "method":"Player.Stop", "params":{"playerid":'$i'},"id":1}'
