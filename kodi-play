@@ -32,7 +32,7 @@ if [[ $ext = 'url' ]]; then
     exit 0
 fi
 
-tnam=$(mktemp "kodi-play-XXXXXX.$ext")
+tnam=$(mktemp -u "kodi-play-XXXXXX.$ext")
 
 if [[ -h ~/video/"kodi-play-*.$ext" ]]; then
     rm ~/video/"kodi-play-*.$ext"
