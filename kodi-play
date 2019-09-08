@@ -34,14 +34,17 @@ fi
 
 tnam=$(mktemp -u "kodi-play-XXXXXX.$ext")
 
-if [[ -h ~/video/"kodi-play-*.$ext" ]]; then
-    rm ~/video/"kodi-play-*.$ext"
-fi
+for i in ~/video/kodi-play-*.$ext
+do
+    if [[ -h $i ]]; then
+        rm $i
+    fi
 
-if [[ -e ~/video/"kodi-play-*.$ext" ]]; then
-    echo "$0: Temp file exists and is not a symbolic link" > /dev/stderr
-    exit 1
-fi
+    if [[ -e $i ]]; then
+        echo "$0: Temp file $i exists and is not a symbolic link" > /dev/stderr
+        exit 1
+    fi
+done
 
 ln -s "$(realpath -- "$@")" ~/video/$tnam
 
