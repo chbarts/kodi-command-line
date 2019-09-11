@@ -34,18 +34,20 @@ fi
 
 tnam=$(mktemp -u "kodi-play-XXXXXX.$ext")
 
-for i in ~/video/kodi-play-*.$ext
-do
-    if [[ -h $i ]]; then
-        rm $i
-    fi
-
-    if [[ -e $i ]]; then
-        echo "$0: Temp file $i exists and is not a symbolic link" > /dev/stderr
-        exit 1
-    fi
-done
-
+if [[ -e ~/video/kodi-play-*.$ext(#qN) ]]; then
+    for i in ~/video/kodi-play-*.$ext
+    do
+        if [[ -h $i ]]; then
+            rm $i
+        fi
+              
+        if [[ -e $i ]]; then
+            echo "$0: Temp file $i exists and is not a symbolic link" > /dev/stderr
+            exit 1
+        fi
+    done
+fi
+          
 ln -s "$(realpath -- "$@")" ~/video/$tnam
 
 # https://stackoverflow.com/questions/13322485/how-to-get-the-primary-ip-address-of-the-local-machine-on-linux-and-os-x
