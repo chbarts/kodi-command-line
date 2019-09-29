@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+setopt extended_glob
+
 kodi_loc='rpi4:8080'
 
 if [[ $# -eq 0 ]]; then
