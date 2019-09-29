@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 
 setopt extended_glob
+setopt null_glob
 
 kodi_loc='rpi4:8080'
 
@@ -36,7 +37,7 @@ fi
 
 tnam=$(mktemp -u "kodi-play-XXXXXX.$ext")
 
-if [[ -e ~/video/kodi-play-*.$ext(#qN) ]]; then
+if [[ -e ~/video/kodi-play-*.$ext ]]; then
     for i in ~/video/kodi-play-*.$ext
     do
         if [[ -h $i ]]; then
