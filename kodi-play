@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
 
-setopt extended_glob
-setopt null_glob
-
 kodi_loc='rpi4:8080'
 
 if [[ $# -eq 0 ]]; then
@@ -36,8 +33,10 @@ if [[ $ext = 'url' ]]; then
 fi
 
 tnam=$(mktemp -u "kodi-play-XXXXXX.$ext")
+# https://stackoverflow.com/questions/3856747/check-whether-a-certain-file-type-extension-exists-in-directory
+count=$(ls -1 ~/video/kodi-play-*.$ext | wc -l)
 
-if [[ -e ~/video/kodi-play-*.$ext ]]; then
+if [[ $count -gt 0 ]]; then
     for i in ~/video/kodi-play-*.$ext
     do
         if [[ -h $i ]]; then
