@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+tmp=$(tempfile -s .url)
+curl https://www.comettv.com/watch-live/ | perl -ne 'if (m{action, '\''(https://[^'\'']+)'\''}) { print "$1\n"; }' > $tmp
+kodi-play $tmp
+rm $tmp
